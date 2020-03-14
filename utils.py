@@ -66,5 +66,5 @@ def benchmark():
   result = perft(rbg_game.game_state(), __RBG_BENCHMARK_DEPTH__)
   end = time.time()
   print('Calculated perft to depth',__RBG_BENCHMARK_DEPTH__,'in',end-begin,'s')
-  print('Visited',results[1],'nodes (',nodes/(end - begin),' nodes/sec)')
-  print('There are',results[0],'leaves and',results[1],'nodes')
+  print('Visited',result[1],'nodes (',nodes/(end - begin),' nodes/sec)')
+  print('There are',result[0],'leaves and',result[1],'nodes')
