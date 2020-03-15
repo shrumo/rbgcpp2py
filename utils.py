@@ -49,8 +49,9 @@ def benchmark():
   points = [0 for i in range(1,rbg_game.number_of_players())]
   nodes = 0
   begin = time.time()
+  begin_state = rbg_game.game_state()
   for i in range(__RBG_BENCHMARK_PLAYOUTS__):
-    results, nodes_visited = playout(rbg_game.game_state())
+    results, nodes_visited = playout(begin_state.copy())
     for player, score in enumerate(results):
       points[player] += score
       nodes += nodes_visited
