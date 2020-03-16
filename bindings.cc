@@ -49,5 +49,15 @@ pybind11::class_<rbg_game::game_state>(m,"game_state")
   .def("apply_move",&rbg_game::game_state::apply_move)
   .def("get_all_moves",py::overload_cast<rbg_game::resettable_bitarray_stack&>(&rbg_game::game_state::get_all_moves))
   .def("apply_any_move",&rbg_game::game_state::apply_any_move)
-  .def("is_legal",&rbg_game::game_state::is_legal);
+  .def("is_legal",&rbg_game::game_state::is_legal)
+  .def("apply_with_keeper",
+    [](rbg_game::game_state& state,const rbg_game::move& move, rbg_game::resettable_bitarray_stack& stack)
+    { 
+      state.apply_move(move); 
+      bool move_exists = true;
+      while(state.get_current_player() == 0 && move_exists) {
+        move_exists = state.apply_any_move(stack);
+      }
+    }
+  );
 };

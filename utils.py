@@ -22,8 +22,7 @@ def perft(state, depth):
   result[1] += 1
   for move in moves:
     next_state = state.copy()
-    next_state.apply_move(move)
-    keeper_closure(next_state)
+    next_state.apply_with_keeper(move, bitarraystack)
     rec_result = perft(next_state, depth-1)
     result[0] += rec_result[0]
     result[1] += rec_result[1]
@@ -37,8 +36,7 @@ def playout(state):
   nodes = 1
   while moves:
     move = random.choice(moves)
-    state.apply_move(move)
-    keeper_closure(state)
+    state.apply_with_keeper(move, bitarraystack)
     moves = state.get_all_moves(bitarraystack)
     nodes += 1
   return [state.get_player_score(i) for i in range(1,rbg_game.number_of_players())], nodes
@@ -50,6 +48,7 @@ def benchmark():
   nodes = 0
   begin = time.time()
   begin_state = rbg_game.game_state()
+  keeper_closure(begin_state)
   for i in range(__RBG_BENCHMARK_PLAYOUTS__):
     results, nodes_visited = playout(begin_state.copy())
     for player, score in enumerate(results):
