@@ -39,6 +39,8 @@ def playout(state):
     state.apply_with_keeper(move, bitarraystack)
     moves = state.get_all_moves(bitarraystack)
     nodes += 1
+  if state.get_current_player() == 0:
+    nodes -= 1
   return [state.get_player_score(i) for i in range(1,rbg_game.number_of_players())], nodes
 
 __RBG_BENCHMARK_PLAYOUTS__=1000
@@ -46,9 +48,9 @@ __RBG_BENCHMARK_DEPTH__=3
 def benchmark():
   points = [0 for i in range(1,rbg_game.number_of_players())]
   nodes = 0
-  begin = time.time()
   begin_state = rbg_game.game_state()
   keeper_closure(begin_state)
+  begin = time.time()
   for i in range(__RBG_BENCHMARK_PLAYOUTS__):
     results, nodes_visited = playout(begin_state.copy())
     for player, score in enumerate(results):
