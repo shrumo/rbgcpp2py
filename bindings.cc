@@ -38,8 +38,20 @@ pybind11::class_<rbg_game::action_representation>(m,"action_representation")
   .def_readonly("cell",&rbg_game::action_representation::cell,"The cell the rule should be applied at.");
 pybind11::class_<rbg_game::move>(m,"move")
   .def_readonly("mr",&rbg_game::move::mr);
+
+m.def("new_game_state",[]()
+    { 
+      rbg_game::game_state result; 
+      rbg_game::resettable_bitarray_stack stack;
+      bool move_exists = true;
+      while(result.get_current_player() == 0 && move_exists) {
+        move_exists = result.apply_any_move(stack);
+      }
+      return result;
+    }
+);
+
 pybind11::class_<rbg_game::game_state>(m,"game_state")
-  .def(py::init<>())
   .def("copy",[](const rbg_game::game_state& state){return rbg_game::game_state(state);}, "Creates a copy of the current game_state.")
   .def("get_current_cell",&rbg_game::game_state::get_current_cell,"Returns the cell the game_state points at.")
   .def("get_piece",&rbg_game::game_state::get_piece)

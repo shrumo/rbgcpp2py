@@ -1,12 +1,12 @@
 import rbg_game
 import time
 import sys
-from utils import perft, keeper_closure
+from utils import perft, benchmark
 
 def main():
-  state = rbg_game.game_state()
+  benchmark()
+  state = rbg_game.new_game_state()
   begin = time.time()
-  keeper_closure(state)
   result = perft(state,3)
   end = time.time()
   print('Calculating perft for depth 3 took',end - begin,'s')

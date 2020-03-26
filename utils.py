@@ -4,12 +4,6 @@ import time
 
 bitarraystack = rbg_game.resettable_bitarray_stack()
 
-# This modifies the input state. Calculates the keeper closure on the given state.
-def keeper_closure(state):
-  move_exists = True
-  while state.get_current_player() == 0 and move_exists:
-    move_exists = state.apply_any_move(bitarraystack)
-
 # Visits all the game tree of a given game to the given depth
 # Returns a pair of numbers of leaves visited and number of nodes visited
 def perft(state, depth):
@@ -31,16 +25,15 @@ def perft(state, depth):
 # Play the game till the end from the current state. 
 # This modifies the given state.
 def playout(state):
-  keeper_closure(state)
-  moves = state.get_all_moves(bitarraystack)
-  nodes = 1
-  while moves:
-    move = random.choice(moves)
-    state.apply_with_keeper(move, bitarraystack)
+  nodes = 0
+  while True:
     moves = state.get_all_moves(bitarraystack)
+    if not moves: break
+    move = random.choice(moves)
     nodes += 1
-  if state.get_current_player() == 0:
-    nodes -= 1
+    state.apply_with_keeper(move, bitarraystack)
+    if state.get_current_player() == 0:
+      break
   return [state.get_player_score(i) for i in range(1,rbg_game.number_of_players())], nodes
 
 __RBG_BENCHMARK_PLAYOUTS__=1000
@@ -48,8 +41,7 @@ __RBG_BENCHMARK_DEPTH__=3
 def benchmark():
   points = [0 for i in range(1,rbg_game.number_of_players())]
   nodes = 0
-  begin_state = rbg_game.game_state()
-  keeper_closure(begin_state)
+  begin_state = rbg_game.new_game_state()
   begin = time.time()
   for i in range(__RBG_BENCHMARK_PLAYOUTS__):
     results, nodes_visited = playout(begin_state.copy())
@@ -65,7 +57,7 @@ def benchmark():
   for player, score in enumerate(points):
     print(player+1,':',score/__RBG_BENCHMARK_PLAYOUTS__)
   begin = time.time()
-  result = perft(rbg_game.game_state(), __RBG_BENCHMARK_DEPTH__)
+  result = perft(begin_state.copy(), __RBG_BENCHMARK_DEPTH__)
   end = time.time()
   print('Calculated perft to depth',__RBG_BENCHMARK_DEPTH__,'in',end-begin,'s')
   print('Visited',result[1],'nodes (',nodes/(end - begin),' nodes/sec)')
