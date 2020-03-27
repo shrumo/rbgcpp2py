@@ -15,7 +15,7 @@ For example to calculate [perft](https://www.chessprogramming.org/Perft) for che
 python3 # The next commands will be in python
 import rbg_game
 import utils
-state = rbg_game.game_state()
+state = rbg_game.new_game_state()
 utils.perft(state,4)
 ```
 
