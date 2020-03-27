@@ -47,7 +47,7 @@ def benchmark():
     results, nodes_visited = playout(begin_state.copy())
     for player, score in enumerate(results):
       points[player] += score
-      nodes += nodes_visited
+    nodes += nodes_visited
     if i % 100 == 0:
       print('Played out',i,'out of',__RBG_BENCHMARK_PLAYOUTS__)
   end = time.time()
