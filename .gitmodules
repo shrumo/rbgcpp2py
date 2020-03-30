@@ -1,9 +1,9 @@
-[submodule "rbg2cpp"]
-	path = rbg2cpp
-	url = https://github.com/uicus/rbg2cpp
 [submodule "pybind11"]
 	path = pybind11
 	url = https://github.com/pybind/pybind11.git
 [submodule "rbgGames"]
 	path = rbgGames
-	url = https://github.com/marekesz/rbgGames
+	url = https://github.com/marekesz/rbgGames.git
+[submodule "rbg2cpp"]
+	path = rbg2cpp
+	url = https://github.com/uicus/rbg2cpp.git
