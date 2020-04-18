@@ -41,7 +41,7 @@ help(rbg_game)
 
 To run tests do:
 ```
-./tests/run_tests.sh
+./scripts/test.sh
 ```
 
 
